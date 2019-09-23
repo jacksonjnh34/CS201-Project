@@ -21,6 +21,21 @@ int main()
 	DUMP(C)
 	C.addFront(37);
 	DUMP(C)
+
+	C.radixSort(8);
+	/*
+	cout << "START SORT" << endl;
+	C.stableSort();
+	DUMP(C)
+	
+
+	int val;
+	cout << "Which kth smallest value?" << endl;
+	cin >> val;
+	int small = C.WCSelect(val);
+	cout << val << "th Smallest Val: " << small << endl;
+	
+	*/
 	
 	for (int i=0; i< 20;i++) C.addEnd(i*i);
 	for (int i=0; i< 20;i++) C.addFront(-(i*i));
@@ -29,5 +44,7 @@ int main()
 	for (int i=0; i< 25;i++) C.delEnd();
 	for (int i=0; i< 10;i++) C.delFront();
 	DUMP(C)
+
+	
 	
 }
