@@ -33,7 +33,7 @@ class CircularDynamicArray
         ~CircularDynamicArray()
         {
             //Ask Dixon if free or delete would be better
-            //free(data);
+            free(data);
             delete(data);
 
             size = 0;
@@ -49,6 +49,26 @@ class CircularDynamicArray
             }
 
             return data[(head + i) % capacity_arr];
+        }
+
+        CircularDynamicArray& operator=(CircularDynamicArray& other)
+        {
+            //printf("copying\n");
+            data = new elmtype[other.capacity()];
+            //printf("array alloced\n");
+            capacity_arr = other.capacity();
+            //printf("cap set\n");
+            size = other.length();
+            //printf("size set\n");
+
+            for(int i = 0; i < size; i++)
+            {
+                //printf("Data: %d\n", other[i]);
+                data[i] = other[i];
+            }
+            //printf("finished\n");
+
+            return *this;
         }
 
         void addEnd(elmtype v)
@@ -166,7 +186,7 @@ class CircularDynamicArray
             }
 
             //cout << "MEDIANS: ";
-            //printArray(medians, numGroups);
+            printArray(medians, numGroups);
 
             elmtype med_of_meds = kSmallest(medians, 0, numGroups - 1, (numGroups / 2) + 1, false, -1);
 
@@ -267,15 +287,14 @@ class CircularDynamicArray
 
             for(int i = 0; i < size; i++)
             {
+                //cout << "DATA: " << data[i] << " vs SEARCHED: " << e << endl;
                 if(data[i] == e)
                 {
                     return i;
                 }
-                else
-                {
-                    return -1;
-                }
             }
+
+            return -1;
 
 
         }
@@ -491,7 +510,7 @@ class CircularDynamicArray
                 cout << A[i];
             }
 
-            printf("\n"); 
+            printf(" \n"); 
         } 
 
         int binarySearch(elmtype arr[], int left, int right, int toSearch) 
