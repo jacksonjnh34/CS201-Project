@@ -43,7 +43,7 @@ int main(){
 	cout << "The index of 37 in C is : " << C.linearSearch(37) << endl;  // 10
 	cout << "The index of 37 in D is : " << D.linearSearch(37) << endl;  // 10	
 
-    //cout << "The 4th smallest item in C is : " << C.WCSelect(4) << endl;  //-64
+    cout << "The 4th smallest item in C is : " << C.WCSelect(4) << endl;  //-64
     cout << "The 5th smallest item in C is : " << C.QuickSelect(5) << endl; //-49
 	
 	cout << "The smallest item in D is : " << D.QuickSelect(1) << endl << endl;  // -200

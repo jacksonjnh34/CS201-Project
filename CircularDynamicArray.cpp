@@ -158,41 +158,17 @@ class CircularDynamicArray
 
         elmtype WCSelect(int k)
         {
+            printf("Begin reordering\n");
             reorder();
-            int numGroups = (size / 5) + 1;
-
-            int medians[numGroups];
-
-            for(int i = 0; i < numGroups; i++)
-            {
-                int group[5];
-                int num_elem = 0;
-
-                for(int j = 0; j < 5; j++)
-                {
-                    int idx = (i * 5) + j;
-
-                    if(idx < size)
-                    {
-                        //cout << data[idx] << endl;
-
-                        group[j] = data[idx];
-                        num_elem++;
-                    }
-                }
-
-                mergeSort(group, 0, num_elem - 1);
-                medians[i] = group[(0 + num_elem) / 2];
-            }
-
-            //cout << "MEDIANS: ";
-            printArray(medians, numGroups);
-
-            elmtype med_of_meds = kSmallest(medians, 0, numGroups - 1, (numGroups / 2) + 1, false, -1);
 
             //cout << "MEDIAN OF MEDIANS: " << med_of_meds << endl;
+            printf("First call of WC Select\n");
 
-            return kSmallest(data, 0, size - 1, k, true, med_of_meds);
+            int idx = getWCPartVal(data, 0, size);
+
+            printf("Recurse\n");
+
+            return kSmallest(data, 0, size - 1, k, true, getWCPartVal(data, 0, size));
         }
 
         void stableSort()
@@ -410,6 +386,47 @@ class CircularDynamicArray
             return i;
         }
 
+        int getWCPartVal(elmtype arr[], int left, int right)
+        {
+            int numGroups = ((right - left) / 5) + 1;
+
+            printf("Num Groups: %d\n", numGroups);
+
+            int medians[numGroups];
+
+            //printf("Start Loops\n");
+            for(int i = 0; i < numGroups; i++)
+            {
+                int group[5];
+                int num_elem = 0;
+
+                //printf("Start inner loop\n");
+                for(int j = 0; j < 5; j++)
+                {
+                    int idx = (i * 5) + j;
+
+                    if(idx < right)
+                    {
+                        //cout << data[idx] << endl;
+
+                        group[j] = data[idx + left];
+                        num_elem++;
+                    }
+                }
+
+                mergeSort(group, 0, num_elem - 1);
+                medians[i] = group[(0 + num_elem) / 2];
+            }
+
+            //printf("Finished loop\n");
+
+            //cout << "MEDIANS: ";
+            //printArray(medians, numGroups);
+
+            return kSmallest(medians, 0, numGroups - 1, (numGroups / 2) + 1, false, -1);
+        }
+
+
         int kSmallest(elmtype arr[], int left, int right, int k, bool opt_part, int median)
         {
             //cout << k << " vs " << right << endl;
@@ -419,7 +436,11 @@ class CircularDynamicArray
 
                 if(opt_part)
                 {
+                    printf("Beginning WC Select in kSmallest\n");
+                    median =  getWCPartVal(arr, left, right);
+                    printf("Completed Median search\n");
                     part_idx = partition(arr, left, right, median);
+                    printf("Completed Partition on med\n");
                 }
                 else
                 {
